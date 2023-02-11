@@ -19,8 +19,8 @@ import com.clinic.repositories.PatientRepository;
 import com.clinic.repositories.SpecialtyRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -54,7 +54,6 @@ public class HospitalServiceImpl implements HospitalService{
         patientDto.setPathologyDto(mapper.fromPathology(pathology));
 
         Patient patient  = mapper.formPatientDto(patientDto);
-
         Patient saved = patientRepository.save(patient);
 
         return mapper.fromPatient(saved);
@@ -64,7 +63,6 @@ public class HospitalServiceImpl implements HospitalService{
     public PatientDto findPatient(Long id) throws PatientNotFoundException {
 
         Patient patient = patientRepository.findById(id).orElseThrow(()->new PatientNotFoundException("Patient not found"));
-
         return mapper.fromPatient(patient);
     }
 
@@ -75,7 +73,6 @@ public class HospitalServiceImpl implements HospitalService{
 
     @Override
     public void deletePatient(Long id) {
-
         pathologyRepository.deleteById(id);
     }
 
@@ -88,16 +85,18 @@ public class HospitalServiceImpl implements HospitalService{
     }
 
     @Override
-    public SpecialtyDto addSpecialty(SpecialtyDto specialtyDto) {
+    public SpecialtyDto addSpecialty(SpecialtyDto specialtyDto)  {
 
         List<Doctor> doctors = doctorRepository.findAll();
         List<Pathology> pathologies = pathologyRepository.findAll();
 
-        List<DoctorDto> doctorDtoList = doctors.stream().map(doctor -> mapper.fromDoctor(doctor)).toList();
-        List<PathologyDto> pathologyDtoList = pathologies.stream().map(pathology -> mapper.fromPathology(pathology)).toList();
 
-        specialtyDto.setDoctorDtoList(doctorDtoList);
-        specialtyDto.setPathologyDtoList(pathologyDtoList);
+        specialtyDto.setDoctorDtoList(doctors.stream()
+                .map(doctor -> mapper.fromDoctor(doctor)).collect(Collectors.toList()));
+
+        specialtyDto.setPathologyDtoList(pathologies.stream()
+                .map(pathology -> mapper.fromPathology(pathology)).collect(Collectors.toList()));
+
 
         Specialty specialty = mapper.fromSpecialtyDto(specialtyDto);
         Specialty saved = specialtyRepository.save(specialty);
@@ -107,12 +106,26 @@ public class HospitalServiceImpl implements HospitalService{
 
     @Override
     public SpecialtyDto findSpecialty(Long id) throws SpecialtyNotFoundException {
-        return null;
+
+        Specialty specialty = specialtyRepository.findById(id).orElseThrow(()-> new SpecialtyNotFoundException("Specialty not found"));
+
+        List<Doctor> doctors = doctorRepository.findAllById(Collections.singleton(id));
+        List<Pathology> pathologies = pathologyRepository.findAllById(Collections.singleton(id));
+
+        List<DoctorDto> doctorDtoList = doctors.stream().map(doctor -> mapper.fromDoctor(doctor)).collect(Collectors.toList());
+        List<PathologyDto> pathologyDtoList = pathologies.stream().map(pathology -> mapper.fromPathology(pathology)).collect(Collectors.toList());
+
+        SpecialtyDto specialtyDto = new SpecialtyDto();
+
+        specialtyDto.setPathologyDtoList(pathologyDtoList);
+        specialtyDto.setDoctorDtoList(doctorDtoList);
+        specialtyDto.setId(specialty.getId());
+
+        return specialtyDto;
     }
 
     @Override
     public void deleteSpecialty(Long id) {
-
         specialtyRepository.deleteById(id);
     }
 
@@ -130,9 +143,10 @@ public class HospitalServiceImpl implements HospitalService{
         Specialty specialty = specialtyRepository.findById(specialtyId).orElseThrow(()-> new SpecialtyNotFoundException("Specialty not found"));
 
         List<Patient> patients = patientRepository.findAll();
-        List<PatientDto> patientDtoList = patients.stream().map(patient -> mapper.fromPatient(patient)).toList();
 
-        doctorDto.setPatientDtoList(patientDtoList);
+        doctorDto.setPatientDtoList(patients.stream()
+                .map(patient -> mapper.fromPatient(patient)).collect(Collectors.toList()));
+
         doctorDto.setSpecialtyDto(mapper.fromSpecialty(specialty));
 
         Doctor doctor = mapper.fromDoctorDto(doctorDto);
@@ -143,7 +157,17 @@ public class HospitalServiceImpl implements HospitalService{
 
     @Override
     public DoctorDto findDoctor(Long id) throws DoctorNotFoundException {
-        return null;
+
+        Doctor doctor = doctorRepository.findById(id).orElseThrow(()-> new DoctorNotFoundException("Doctor not found"));
+
+        List<Patient> patients = patientRepository.findAllById(Collections.singleton(id));
+        List<PatientDto> patientDtos = patients.stream().map(patient -> mapper.fromPatient(patient)).collect(Collectors.toList());
+
+        DoctorDto doctorDto = new DoctorDto();
+        doctorDto.setPatientDtoList(patientDtos);
+        doctorDto.setId(doctor.getId());
+
+        return doctorDto;
     }
 
     @Override
@@ -173,6 +197,8 @@ public class HospitalServiceImpl implements HospitalService{
 
     @Override
     public PathologyDto findPathology(Long id) throws PathologyNotFoundException {
-        return null;
+
+        Pathology pathology = pathologyRepository.findById(id).orElseThrow(()-> new PathologyNotFoundException("Pathology not found"));
+        return mapper.fromPathology(pathology);
     }
 }

@@ -19,10 +19,10 @@ public class Specialty {
     private Long id;
     private String name;
 
-    @OneToMany(mappedBy = "specialty")
+    @OneToMany(mappedBy = "specialty",fetch = FetchType.LAZY)
     private List<Doctor> doctorList;
 
-    @OneToMany(mappedBy = "specialty")
+    @OneToMany(mappedBy = "specialty",fetch = FetchType.LAZY)
     private List<Pathology> pathologyList;
 
 

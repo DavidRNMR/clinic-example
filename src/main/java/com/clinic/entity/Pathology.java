@@ -19,7 +19,7 @@ public class Pathology {
     private Long id;
     private String name;
 
-    @OneToMany(mappedBy = "pathology")
+    @OneToMany(mappedBy = "pathology",fetch = FetchType.LAZY)
     private List<Patient> patientList;
 
     @ManyToOne

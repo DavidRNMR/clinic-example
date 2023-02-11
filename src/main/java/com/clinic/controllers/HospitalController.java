@@ -6,6 +6,7 @@ import com.clinic.dtos.PatientDto;
 import com.clinic.dtos.SpecialtyDto;
 import com.clinic.exceptions.DoctorNotFoundException;
 import com.clinic.exceptions.PathologyNotFoundException;
+import com.clinic.exceptions.PatientNotFoundException;
 import com.clinic.exceptions.SpecialtyNotFoundException;
 import com.clinic.service.HospitalService;
 import lombok.AllArgsConstructor;
@@ -19,6 +20,8 @@ import java.util.List;
 public class HospitalController {
 
     private HospitalService service;
+
+
 
 
     @PostMapping("/specialties")
@@ -62,6 +65,26 @@ public class HospitalController {
     @GetMapping("/specialties")
     public List<SpecialtyDto> findSpecialties (){
         return service.findAllSpecialties();
+    }
+
+    @GetMapping("/specialties/{id}")
+    public SpecialtyDto findOneSpecialty (@PathVariable Long id) throws SpecialtyNotFoundException{
+        return service.findSpecialty(id);
+    }
+
+    @GetMapping("/doctors/{id}")
+    public DoctorDto findOnedoctor (@PathVariable Long id) throws DoctorNotFoundException{
+        return service.findDoctor(id);
+    }
+
+    @GetMapping("/pathologies/{id}")
+    public PathologyDto findOnePathology (@PathVariable Long id) throws PathologyNotFoundException{
+        return service.findPathology(id);
+    }
+
+    @GetMapping("/patients/{id}")
+    public PatientDto findOnePatient (@PathVariable Long id) throws PatientNotFoundException {
+        return service.findPatient(id);
     }
 
 }
