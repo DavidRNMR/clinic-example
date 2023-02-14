@@ -1,35 +1,25 @@
 package com.clinic.entity;
 
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import javax.persistence.*;
 
+import javax.persistence.*;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name="patients")
-public class Patient {
+@Table(name="emergency_managers")
+public class EmergencyManager {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id")
     private Long id;
     private String name;
     private String lastName;
 
-    @ManyToOne
-    @JsonBackReference
-    private Pathology pathology;
-
-    @ManyToOne
-    @JsonBackReference
-    private Doctor doctor;
-
-    @ManyToOne
-    @JsonBackReference
+    @OneToOne(mappedBy = "manager")
     private Emergency emergency;
 }

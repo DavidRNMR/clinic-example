@@ -1,13 +1,7 @@
 package com.clinic.mapper;
 
-import com.clinic.dtos.DoctorDto;
-import com.clinic.dtos.PathologyDto;
-import com.clinic.dtos.PatientDto;
-import com.clinic.dtos.SpecialtyDto;
-import com.clinic.entity.Doctor;
-import com.clinic.entity.Pathology;
-import com.clinic.entity.Patient;
-import com.clinic.entity.Specialty;
+import com.clinic.dtos.*;
+import com.clinic.entity.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -83,4 +77,43 @@ public class HospitalMapper {
         BeanUtils.copyProperties(specialtyDto,specialty);
         return specialty;
     }
+
+    public EmergencyDto fromEmergency (Emergency emergency){
+
+        EmergencyDto emergencyDto = new EmergencyDto();
+        BeanUtils.copyProperties(emergency,emergencyDto);
+
+        emergencyDto.setEmergencyManagerDto(fromEmergencyManager(emergency.getManager()));
+        return emergencyDto;
+
+    }
+
+    public Emergency fromEmergencyDto (EmergencyDto emergencyDto){
+
+        Emergency emergency = new Emergency();
+        BeanUtils.copyProperties(emergencyDto,emergency);
+
+        emergency.setManager(fromEmergencyManagerDto(emergencyDto.getEmergencyManagerDto()));
+        return emergency;
+    }
+
+    public EmergencyManagerDto fromEmergencyManager (EmergencyManager emergencyManager){
+
+        EmergencyManagerDto emergencyManagerDto = new EmergencyManagerDto();
+        BeanUtils.copyProperties(emergencyManager,emergencyManagerDto);
+
+        emergencyManagerDto.setEmergencyDto(fromEmergency(emergencyManager.getEmergency()));
+        return emergencyManagerDto;
+    }
+
+    public EmergencyManager fromEmergencyManagerDto (EmergencyManagerDto emergencyManagerDto){
+
+        EmergencyManager emergencyManager = new EmergencyManager();
+        BeanUtils.copyProperties(emergencyManagerDto,emergencyManager);
+
+        emergencyManager.setEmergency(fromEmergencyDto(emergencyManagerDto.getEmergencyDto()));
+        return emergencyManager;
+    }
+
+
 }
