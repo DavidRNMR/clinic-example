@@ -1,5 +1,7 @@
 package com.clinic.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,8 +22,10 @@ public class Pathology {
     private String name;
 
     @OneToMany(mappedBy = "pathology",fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<Patient> patientList;
 
     @ManyToOne
+    @JsonBackReference
     private Specialty specialty;
 }

@@ -15,7 +15,7 @@ public interface HospitalService {
 
     List<PatientDto> findAllPatients();
     PatientDto addPatient (PatientDto patientDto,Long doctorId, Long pathologyId) throws DoctorNotFoundException,PathologyNotFoundException;
-    PatientDto findPatient(Long id) throws PatientNotFoundException;
+    PatientDto findPatient(Long id) throws PatientNotFoundException,PathologyNotFoundException,DoctorNotFoundException;
     PatientDto updatePatient (PatientDto patientDto);
     void deletePatient (Long id);
 
@@ -30,5 +30,5 @@ public interface HospitalService {
 
     List<PathologyDto> findAllPathologies();
     PathologyDto addPathology (PathologyDto pathologyDto,Long specialtyId) throws SpecialtyNotFoundException;
-    PathologyDto findPathology (Long id) throws PathologyNotFoundException;
+    PathologyDto findPathology (Long id) throws PathologyNotFoundException, SpecialtyNotFoundException;
 }

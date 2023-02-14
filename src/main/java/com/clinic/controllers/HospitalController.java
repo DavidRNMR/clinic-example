@@ -22,8 +22,6 @@ public class HospitalController {
     private HospitalService service;
 
 
-
-
     @PostMapping("/specialties")
     public SpecialtyDto addSpecialty (@RequestBody SpecialtyDto specialtyDto){
         return service.addSpecialty(specialtyDto);
@@ -78,12 +76,12 @@ public class HospitalController {
     }
 
     @GetMapping("/pathologies/{id}")
-    public PathologyDto findOnePathology (@PathVariable Long id) throws PathologyNotFoundException{
+    public PathologyDto findOnePathology (@PathVariable Long id) throws PathologyNotFoundException, SpecialtyNotFoundException {
         return service.findPathology(id);
     }
 
     @GetMapping("/patients/{id}")
-    public PatientDto findOnePatient (@PathVariable Long id) throws PatientNotFoundException {
+    public PatientDto findOnePatient (@PathVariable Long id) throws PatientNotFoundException, DoctorNotFoundException, PathologyNotFoundException {
         return service.findPatient(id);
     }
 

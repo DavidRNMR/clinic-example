@@ -1,6 +1,7 @@
 package com.clinic.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,8 +22,10 @@ public class Patient {
     private String lastName;
 
     @ManyToOne
+    @JsonBackReference
     private Pathology pathology;
 
     @ManyToOne
+    @JsonBackReference
     private Doctor doctor;
 }

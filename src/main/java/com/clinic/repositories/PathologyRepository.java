@@ -8,5 +8,4 @@ import java.util.List;
 
 public interface PathologyRepository extends JpaRepository<Pathology,Long> {
 
-    List<Pathology> findAllBySpecialtyId (Long id);
 }
