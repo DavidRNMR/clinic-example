@@ -1,13 +1,7 @@
 package com.clinic.controllers;
 
-import com.clinic.dtos.DoctorDto;
-import com.clinic.dtos.PathologyDto;
-import com.clinic.dtos.PatientDto;
-import com.clinic.dtos.SpecialtyDto;
-import com.clinic.exceptions.DoctorNotFoundException;
-import com.clinic.exceptions.PathologyNotFoundException;
-import com.clinic.exceptions.PatientNotFoundException;
-import com.clinic.exceptions.SpecialtyNotFoundException;
+import com.clinic.dtos.*;
+import com.clinic.exceptions.*;
 import com.clinic.service.HospitalService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -37,12 +31,13 @@ public class HospitalController {
         return  service.addDoctor(doctorDto,id);
     }
 
-    @PostMapping("/patients/{doctorId}/{pathologyId}")
+    @PostMapping("/patients/{doctorId}/{pathologyId}/{emergencyId}")
     public PatientDto addPatient (@RequestBody PatientDto patientDto,
                                   @PathVariable Long doctorId,
-                                  @PathVariable Long pathologyId) throws DoctorNotFoundException, PathologyNotFoundException {
+                                  @PathVariable Long pathologyId,
+                                  @PathVariable Long emergencyId) throws DoctorNotFoundException, PathologyNotFoundException {
 
-        return service.addPatient(patientDto,doctorId,pathologyId);
+        return service.addPatient(patientDto,doctorId,pathologyId,emergencyId);
     }
 
     @GetMapping("/doctors")
@@ -84,5 +79,16 @@ public class HospitalController {
     public PatientDto findOnePatient (@PathVariable Long id) throws PatientNotFoundException, DoctorNotFoundException, PathologyNotFoundException {
         return service.findPatient(id);
     }
+
+    @PostMapping("/emergencies/{managerId}")
+    public EmergencyDto addEmergency (@RequestBody EmergencyDto emergencyDto, @PathVariable Long managerId) throws EmergencyManagerNotFoundException{
+        return service.addEmergency(emergencyDto,managerId);
+    }
+
+    @PostMapping("/managers")
+    public EmergencyManagerDto addManager (@RequestBody EmergencyManagerDto emergencyManagerDto){
+        return service.addManager(emergencyManagerDto);
+    }
+
 
 }

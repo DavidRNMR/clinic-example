@@ -15,6 +15,7 @@ public class HospitalMapper {
 
         patientDto.setDoctorDto(fromDoctor(patient.getDoctor()));
         patientDto.setPathologyDto(fromPathology(patient.getPathology()));
+        patientDto.setEmergencyDto(fromEmergency(patient.getEmergency()));
         return patientDto;
     }
 
@@ -25,6 +26,7 @@ public class HospitalMapper {
 
         patient.setDoctor(fromDoctorDto(patientDto.getDoctorDto()));
         patient.setPathology(fromPathologyDto(patientDto.getPathologyDto()));
+        patient.setEmergency(fromEmergencyDto(patientDto.getEmergencyDto()));
         return patient;
     }
 
@@ -34,6 +36,7 @@ public class HospitalMapper {
         BeanUtils.copyProperties(doctor,doctorDto);
 
         doctorDto.setSpecialtyDto(fromSpecialty(doctor.getSpecialty()));
+        doctorDto.setEmergencyDto(fromEmergency(doctor.getEmergency()));
         return doctorDto;
     }
 
@@ -43,6 +46,7 @@ public class HospitalMapper {
         BeanUtils.copyProperties(doctorDto,doctor);
 
         doctor.setSpecialty(fromSpecialtyDto(doctorDto.getSpecialtyDto()));
+        doctor.setEmergency(fromEmergencyDto(doctorDto.getEmergencyDto()));
         return doctor;
     }
 
@@ -102,7 +106,6 @@ public class HospitalMapper {
         EmergencyManagerDto emergencyManagerDto = new EmergencyManagerDto();
         BeanUtils.copyProperties(emergencyManager,emergencyManagerDto);
 
-        emergencyManagerDto.setEmergencyDto(fromEmergency(emergencyManager.getEmergency()));
         return emergencyManagerDto;
     }
 
@@ -111,7 +114,6 @@ public class HospitalMapper {
         EmergencyManager emergencyManager = new EmergencyManager();
         BeanUtils.copyProperties(emergencyManagerDto,emergencyManager);
 
-        emergencyManager.setEmergency(fromEmergencyDto(emergencyManagerDto.getEmergencyDto()));
         return emergencyManager;
     }
 

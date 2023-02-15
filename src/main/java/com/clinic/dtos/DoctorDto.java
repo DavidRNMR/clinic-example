@@ -1,9 +1,9 @@
 package com.clinic.dtos;
 
-import com.clinic.entity.Specialty;
-import lombok.Data;
 
+import lombok.Data;
 import java.util.List;
+
 
 @Data
 public class DoctorDto {
@@ -12,4 +12,5 @@ public class DoctorDto {
     private String name;
     private List<PatientDto> patientDtoList;
     private SpecialtyDto specialtyDto;
+    private EmergencyDto emergencyDto;
 }

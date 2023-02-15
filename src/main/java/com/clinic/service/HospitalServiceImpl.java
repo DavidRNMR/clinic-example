@@ -1,27 +1,16 @@
 package com.clinic.service;
 
-import com.clinic.dtos.DoctorDto;
-import com.clinic.dtos.PathologyDto;
-import com.clinic.dtos.PatientDto;
-import com.clinic.dtos.SpecialtyDto;
-import com.clinic.entity.Doctor;
-import com.clinic.entity.Pathology;
-import com.clinic.entity.Patient;
-import com.clinic.entity.Specialty;
-import com.clinic.exceptions.DoctorNotFoundException;
-import com.clinic.exceptions.PathologyNotFoundException;
-import com.clinic.exceptions.PatientNotFoundException;
-import com.clinic.exceptions.SpecialtyNotFoundException;
+import com.clinic.dtos.*;
+import com.clinic.entity.*;
+import com.clinic.exceptions.*;
 import com.clinic.mapper.HospitalMapper;
-import com.clinic.repositories.DoctorRepository;
-import com.clinic.repositories.PathologyRepository;
-import com.clinic.repositories.PatientRepository;
-import com.clinic.repositories.SpecialtyRepository;
+import com.clinic.repositories.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,6 +23,8 @@ public class HospitalServiceImpl implements HospitalService{
     private DoctorRepository doctorRepository;
     private SpecialtyRepository specialtyRepository;
     private HospitalMapper mapper;
+    private EmergencyManagerRepository emergencyManagerRepository;
+    private EmergencyRepository emergencyRepository;
 
 
     @Override
@@ -45,10 +36,17 @@ public class HospitalServiceImpl implements HospitalService{
     }
 
     @Override
-    public PatientDto addPatient(PatientDto patientDto,Long doctorId, Long pathologyId) throws DoctorNotFoundException, PathologyNotFoundException {
+    public PatientDto addPatient(PatientDto patientDto,Long doctorId, Long pathologyId,Long emergencyId) throws DoctorNotFoundException,PathologyNotFoundException{
 
         Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(()-> new DoctorNotFoundException("Doctor not Found"));
         Pathology pathology = pathologyRepository.findById(pathologyId).orElseThrow(()-> new PathologyNotFoundException("Pathology not Found"));
+        Optional<Emergency> emergency = emergencyRepository.findById(emergencyId);
+
+        if(emergency.isPresent()){
+
+            Emergency emergency1 = emergency.get();
+            patientDto.setEmergencyDto(mapper.fromEmergency(emergency1));
+        }
 
         patientDto.setDoctorDto(mapper.fromDoctor(doctor));
         patientDto.setPathologyDto(mapper.fromPathology(pathology));
@@ -65,11 +63,16 @@ public class HospitalServiceImpl implements HospitalService{
         Patient patient = patientRepository.findById(id).orElseThrow(()->new PatientNotFoundException("Patient not found"));
         Doctor doctor = doctorRepository.findById(id).orElseThrow(()-> new DoctorNotFoundException("Doctor not found"));
         Pathology pathology = pathologyRepository.findById(id).orElseThrow(()-> new PathologyNotFoundException("Pathology not found"));
+        Optional<Emergency> emergency = emergencyRepository.findById(id);
 
         PatientDto patientDto = mapper.fromPatient(patient);
         patientDto.setPathologyDto(mapper.fromPathology(pathology));
         patientDto.setDoctorDto(mapper.fromDoctor(doctor));
 
+        if(emergency.isPresent()){
+            Emergency emergency1 = emergency.get();
+            patientDto.setEmergencyDto(mapper.fromEmergency(emergency1));
+        }
         return patientDto;
     }
 
@@ -213,5 +216,27 @@ public class HospitalServiceImpl implements HospitalService{
         pathologyDto.setPatientDtoList(patientDtoList);
 
         return pathologyDto;
+    }
+
+    @Override
+    public EmergencyDto addEmergency(EmergencyDto emergencyDto, Long managerId) throws EmergencyManagerNotFoundException {
+
+        EmergencyManager emergencyManager = emergencyManagerRepository.findById(managerId).orElseThrow(()-> new EmergencyManagerNotFoundException("Manager not found"));
+
+        emergencyDto.setEmergencyManagerDto(mapper.fromEmergencyManager(emergencyManager));
+
+        Emergency emergency = mapper.fromEmergencyDto(emergencyDto);
+        Emergency saved = emergencyRepository.save(emergency);
+
+        return mapper.fromEmergency(saved);
+    }
+
+    @Override
+    public EmergencyManagerDto addManager(EmergencyManagerDto emergencyManagerDto) {
+
+        EmergencyManager emergencyManager = mapper.fromEmergencyManagerDto(emergencyManagerDto);
+        EmergencyManager saved = emergencyManagerRepository.save(emergencyManager);
+
+        return mapper.fromEmergencyManager(saved);
     }
 }

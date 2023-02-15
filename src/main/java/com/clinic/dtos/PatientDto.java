@@ -12,4 +12,5 @@ public class PatientDto implements Serializable {
     private String lastName;
     private DoctorDto doctorDto;
     private PathologyDto pathologyDto;
+    private EmergencyDto emergencyDto;
 }

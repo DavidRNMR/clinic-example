@@ -1,20 +1,14 @@
 package com.clinic.service;
 
-import com.clinic.dtos.DoctorDto;
-import com.clinic.dtos.PathologyDto;
-import com.clinic.dtos.PatientDto;
-import com.clinic.dtos.SpecialtyDto;
-import com.clinic.exceptions.DoctorNotFoundException;
-import com.clinic.exceptions.PathologyNotFoundException;
-import com.clinic.exceptions.PatientNotFoundException;
-import com.clinic.exceptions.SpecialtyNotFoundException;
+import com.clinic.dtos.*;
+import com.clinic.exceptions.*;
 
 import java.util.List;
 
 public interface HospitalService {
 
     List<PatientDto> findAllPatients();
-    PatientDto addPatient (PatientDto patientDto,Long doctorId, Long pathologyId) throws DoctorNotFoundException,PathologyNotFoundException;
+    PatientDto addPatient (PatientDto patientDto,Long doctorId, Long pathologyId, Long emergencyId) throws DoctorNotFoundException,PathologyNotFoundException;
     PatientDto findPatient(Long id) throws PatientNotFoundException,PathologyNotFoundException,DoctorNotFoundException;
     PatientDto updatePatient (PatientDto patientDto);
     void deletePatient (Long id);
@@ -31,4 +25,7 @@ public interface HospitalService {
     List<PathologyDto> findAllPathologies();
     PathologyDto addPathology (PathologyDto pathologyDto,Long specialtyId) throws SpecialtyNotFoundException;
     PathologyDto findPathology (Long id) throws PathologyNotFoundException, SpecialtyNotFoundException;
+    EmergencyDto addEmergency (EmergencyDto emergencyDto,Long managerId) throws EmergencyManagerNotFoundException;
+    EmergencyManagerDto addManager (EmergencyManagerDto emergencyManagerDto);
+
 }
