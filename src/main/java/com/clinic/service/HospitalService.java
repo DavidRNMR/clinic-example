@@ -1,6 +1,7 @@
 package com.clinic.service;
 
 import com.clinic.dtos.*;
+import com.clinic.entity.EmergencyManager;
 import com.clinic.exceptions.*;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public interface HospitalService {
     void deleteSpecialty (Long id);
 
     List<DoctorDto> findAllDoctors();
-    DoctorDto addDoctor (DoctorDto doctorDto,Long specialtyId)throws SpecialtyNotFoundException;
+    DoctorDto addDoctor (DoctorDto doctorDto,Long specialtyId,Long emergencyId)throws SpecialtyNotFoundException;
     DoctorDto findDoctor (Long id) throws DoctorNotFoundException;
 
     List<PathologyDto> findAllPathologies();
@@ -27,5 +28,7 @@ public interface HospitalService {
     PathologyDto findPathology (Long id) throws PathologyNotFoundException, SpecialtyNotFoundException;
     EmergencyDto addEmergency (EmergencyDto emergencyDto,Long managerId) throws EmergencyManagerNotFoundException;
     EmergencyManagerDto addManager (EmergencyManagerDto emergencyManagerDto);
+    EmergencyManagerDto findOneManager (Long id) throws EmergencyManagerNotFoundException;
+    EmergencyDto findOneEmergency (Long id) throws EmergencyNotFoundException;
 
 }

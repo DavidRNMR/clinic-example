@@ -26,16 +26,18 @@ public class HospitalController {
         return service.addPathology(pathologyDto,id);
     }
 
-    @PostMapping("/doctors/{id}")
-    public DoctorDto addDoctor (@RequestBody DoctorDto doctorDto, @PathVariable Long id) throws SpecialtyNotFoundException {
-        return  service.addDoctor(doctorDto,id);
+    @PostMapping("/doctors/{id}/{emergencyId}")
+    public DoctorDto addDoctor (@RequestBody DoctorDto doctorDto,
+                                @PathVariable Long id,
+                                @PathVariable Long emergencyId) throws SpecialtyNotFoundException {
+        return  service.addDoctor(doctorDto,id,emergencyId);
     }
 
     @PostMapping("/patients/{doctorId}/{pathologyId}/{emergencyId}")
     public PatientDto addPatient (@RequestBody PatientDto patientDto,
                                   @PathVariable Long doctorId,
                                   @PathVariable Long pathologyId,
-                                  @PathVariable Long emergencyId) throws DoctorNotFoundException, PathologyNotFoundException {
+                                  @PathVariable(required = false) Long emergencyId) throws DoctorNotFoundException, PathologyNotFoundException {
 
         return service.addPatient(patientDto,doctorId,pathologyId,emergencyId);
     }
@@ -88,6 +90,16 @@ public class HospitalController {
     @PostMapping("/managers")
     public EmergencyManagerDto addManager (@RequestBody EmergencyManagerDto emergencyManagerDto){
         return service.addManager(emergencyManagerDto);
+    }
+
+    @GetMapping("/emergencies/{id}")
+    public EmergencyDto findOneEmergency (@PathVariable Long id) throws EmergencyNotFoundException{
+        return service.findOneEmergency(id);
+    }
+
+    @GetMapping("/managers/{id}")
+    public EmergencyManagerDto findOneManger (@PathVariable Long id) throws EmergencyManagerNotFoundException{
+        return service.findOneManager(id);
     }
 
 

@@ -1,5 +1,7 @@
 package com.clinic.entity;
 
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,5 +23,6 @@ public class EmergencyManager {
     private String lastName;
 
     @OneToOne(mappedBy = "manager")
+    @JsonManagedReference
     private Emergency emergency;
 }

@@ -146,11 +146,19 @@ public class HospitalServiceImpl implements HospitalService{
     }
 
     @Override
-    public DoctorDto addDoctor(DoctorDto doctorDto,Long specialtyId) throws SpecialtyNotFoundException {
+    public DoctorDto addDoctor(DoctorDto doctorDto,Long specialtyId,Long emergencyId) throws SpecialtyNotFoundException {
 
         Specialty specialty = specialtyRepository.findById(specialtyId).orElseThrow(()-> new SpecialtyNotFoundException("Specialty not found"));
+        Optional<Emergency> emergency = emergencyRepository.findById(emergencyId);
+
+        if(emergency.isPresent()){
+
+            Emergency emergency1 = emergency.get();
+            doctorDto.setEmergencyDto(mapper.fromEmergency(emergency1));
+        }
 
         List<Patient> patients = patientRepository.findAll();
+
 
         doctorDto.setPatientDtoList(patients.stream()
                 .map(patient -> mapper.fromPatient(patient)).collect(Collectors.toList()));
@@ -167,6 +175,12 @@ public class HospitalServiceImpl implements HospitalService{
     public DoctorDto findDoctor(Long id) throws DoctorNotFoundException {
 
         Doctor doctor = doctorRepository.findById(id).orElseThrow(()-> new DoctorNotFoundException("Doctor not found"));
+        Optional<Emergency> emergency = emergencyRepository.findById(id);
+
+        if(emergency.isPresent()){
+            Emergency emergency1 = emergency.get();
+            doctor.setEmergency(emergency1);
+        }
 
         List<Patient> patients = patientRepository.findAllById(Collections.singleton(id));
         List<PatientDto> patientDtos = patients.stream().map(patient -> mapper.fromPatient(patient)).collect(Collectors.toList());
@@ -239,4 +253,19 @@ public class HospitalServiceImpl implements HospitalService{
 
         return mapper.fromEmergencyManager(saved);
     }
+
+    @Override
+    public EmergencyManagerDto findOneManager(Long id) throws EmergencyManagerNotFoundException {
+
+        EmergencyManager emergencyManager = emergencyManagerRepository.findById(id).orElseThrow(()-> new EmergencyManagerNotFoundException("Manager not found"));
+        return mapper.fromEmergencyManager(emergencyManager);
+    }
+
+    @Override
+    public EmergencyDto findOneEmergency(Long id) throws EmergencyNotFoundException {
+
+        Emergency emergency = emergencyRepository.findById(id).orElseThrow(()-> new EmergencyNotFoundException("Emergency not found"));
+        return mapper.fromEmergency(emergency);
+    }
+
 }
