@@ -78,7 +78,11 @@ public class HospitalServiceImpl implements HospitalService{
 
     @Override
     public PatientDto updatePatient(PatientDto patientDto) {
-        return null;
+
+        Patient patient = mapper.formPatientDto(patientDto);
+        Patient saved = patientRepository.save(patient);
+
+        return mapper.fromPatient(saved);
     }
 
     @Override

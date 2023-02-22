@@ -4,6 +4,7 @@ import com.clinic.dtos.*;
 import com.clinic.exceptions.*;
 import com.clinic.service.HospitalService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,16 +18,19 @@ public class HospitalController {
 
 
     @PostMapping("/specialties")
+    @ResponseStatus(HttpStatus.CREATED)
     public SpecialtyDto addSpecialty (@RequestBody SpecialtyDto specialtyDto){
         return service.addSpecialty(specialtyDto);
     }
 
     @PostMapping("/pathologies/{id}")
+    @ResponseStatus(HttpStatus.CREATED)
     public PathologyDto addPathology (@RequestBody PathologyDto pathologyDto, @PathVariable Long id) throws SpecialtyNotFoundException {
         return service.addPathology(pathologyDto,id);
     }
 
     @PostMapping("/doctors/{id}/{emergencyId}")
+    @ResponseStatus(HttpStatus.CREATED)
     public DoctorDto addDoctor (@RequestBody DoctorDto doctorDto,
                                 @PathVariable Long id,
                                 @PathVariable Long emergencyId) throws SpecialtyNotFoundException {
@@ -34,6 +38,7 @@ public class HospitalController {
     }
 
     @PostMapping("/patients/{doctorId}/{pathologyId}/{emergencyId}")
+    @ResponseStatus(HttpStatus.CREATED)
     public PatientDto addPatient (@RequestBody PatientDto patientDto,
                                   @PathVariable Long doctorId,
                                   @PathVariable Long pathologyId,
@@ -88,6 +93,7 @@ public class HospitalController {
     }
 
     @PostMapping("/managers")
+    @ResponseStatus(HttpStatus.CREATED)
     public EmergencyManagerDto addManager (@RequestBody EmergencyManagerDto emergencyManagerDto){
         return service.addManager(emergencyManagerDto);
     }
@@ -100,6 +106,18 @@ public class HospitalController {
     @GetMapping("/managers/{id}")
     public EmergencyManagerDto findOneManger (@PathVariable Long id) throws EmergencyManagerNotFoundException{
         return service.findOneManager(id);
+    }
+
+    @DeleteMapping("/patients/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deletePatient (@PathVariable Long id){
+        service.deletePatient(id);
+    }
+
+    @PutMapping("/patients/{id}")
+    public PatientDto updatePatient (@RequestBody PatientDto patientDto, @PathVariable Long id) throws PatientNotFoundException {
+        patientDto.setId(id);
+        return service.updatePatient(patientDto);
     }
 
 
