@@ -6,7 +6,6 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-@Builder
 public class PatientDto implements Serializable {
 
     private Long id;

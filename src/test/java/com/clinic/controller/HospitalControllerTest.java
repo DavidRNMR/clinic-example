@@ -47,20 +47,19 @@ public class HospitalControllerTest {
     @BeforeEach
     void init(){
 
-        patientDto = PatientDto.builder()
-                .name("Petter")
-                .lastName("Griffin")
-                .build();
+        patientDto = new PatientDto();
+        patientDto.setName("Petter");
+        patientDto.setLastName("Griffin");
 
-        allergology = SpecialtyDto.builder()
-                .id(1L)
-                .name("alergologia")
-                .build();
+        allergology = new SpecialtyDto();
+                allergology.setId(1L);
+                allergology.setName("alergologia");
 
-        cardiology =  SpecialtyDto.builder()
-                .id(2L)
-                .name("cardiologia")
-                .build();
+
+        cardiology =  new SpecialtyDto();
+                cardiology.setId(2L);
+                cardiology.setName("cardiologia");
+
 
     }
 

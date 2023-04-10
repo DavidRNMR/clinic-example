@@ -7,7 +7,6 @@ import java.io.Serializable;
 import java.util.List;
 
 @Data
-@Builder
 public class SpecialtyDto implements Serializable {
 
     private Long id;

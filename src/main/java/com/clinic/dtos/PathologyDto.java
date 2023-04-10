@@ -7,7 +7,6 @@ import java.io.Serializable;
 import java.util.List;
 
 @Data
-@Builder
 public class PathologyDto implements Serializable {
 
     private Long id;

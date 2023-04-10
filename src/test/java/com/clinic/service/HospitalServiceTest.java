@@ -1,10 +1,7 @@
 package com.clinic.service;
 
 
-import com.clinic.dtos.DoctorDto;
-import com.clinic.dtos.PathologyDto;
-import com.clinic.dtos.PatientDto;
-import com.clinic.dtos.SpecialtyDto;
+import com.clinic.dtos.*;
 import com.clinic.entity.*;
 import com.clinic.exceptions.DoctorNotFoundException;
 import com.clinic.exceptions.PathologyNotFoundException;
@@ -63,44 +60,42 @@ public class HospitalServiceTest {
         Long pathologyId = 2L;
         Long emergencyId = 3L;
 
-        //definir comportamiento
+        //define behaviour
+        Doctor doctor = new Doctor();
+                doctor.setId(doctorId);
 
-        PatientDto patientDto = PatientDto.builder()
-                .name("David")
-                .lastName("Gomez")
-                .build();
+        Pathology pathology = new Pathology();
+               pathology.setId(pathologyId);
 
-        Doctor doctor = Doctor.builder()
-                .id(doctorId)
-                .build();
+        Emergency emergency = new Emergency();
+                emergency.setId(emergencyId);
 
+        PatientDto patientDto = new PatientDto();
+        patientDto.setName("Paco");
+        patientDto.setLastName("Porras");
+        patientDto.setEmergencyDto(new EmergencyDto());
+        patientDto.setDoctorDto(new DoctorDto());
+        patientDto.setPathologyDto(new PathologyDto());
+
+
+        //repository
         when(doctorRepository.findById(doctorId)).thenReturn(Optional.of(doctor));
-
-        Pathology pathology = Pathology.builder()
-                .id(pathologyId)
-                .build();
-
         when(pathologyRepository.findById(pathologyId)).thenReturn(Optional.of(pathology));
-
-        Emergency emergency = Emergency.builder()
-                .id(emergencyId)
-                .build();
-
         when(emergencyRepository.findById(emergencyId)).thenReturn(Optional.of(emergency));
 
+        //service behaviour
         when(patientRepository.save(any(Patient.class))).thenReturn(new Patient());
 
-
+        //service call
         PatientDto result = hospitalService.addPatient(patientDto,doctorId,pathologyId,emergencyId);
 
-        //verificar
-
+        //verify
        verify(doctorRepository).findById(doctorId);
        verify(pathologyRepository).findById(pathologyId);
-       verify(emergencyManagerRepository).findById(emergencyId);
+       verify(emergencyRepository).findById(emergencyId);
        verify(patientRepository).save(any(Patient.class));
 
-        assertNotNull(result);
+       assertNotNull(result);
 
     }
 
