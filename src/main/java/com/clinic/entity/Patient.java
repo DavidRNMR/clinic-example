@@ -1,8 +1,8 @@
 package com.clinic.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
@@ -12,6 +12,7 @@ import javax.persistence.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Table(name="patients")
 public class Patient {
 
@@ -22,14 +23,11 @@ public class Patient {
     private String lastName;
 
     @ManyToOne
-    @JsonBackReference
     private Pathology pathology;
 
     @ManyToOne
-    @JsonBackReference
     private Doctor doctor;
 
     @ManyToOne
-    @JsonBackReference
     private Emergency emergency;
 }

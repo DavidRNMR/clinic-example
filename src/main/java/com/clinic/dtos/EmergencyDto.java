@@ -1,11 +1,12 @@
 package com.clinic.dtos;
 
-import com.clinic.entity.EmergencyManager;
+import lombok.Builder;
 import lombok.Data;
 import java.io.Serializable;
 import java.util.List;
 
 @Data
+@Builder
 public class EmergencyDto implements Serializable {
 
     private Long id;

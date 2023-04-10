@@ -1,7 +1,7 @@
 package com.clinic.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +12,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Table(name="speciaties")
 public class Specialty {
 
@@ -21,11 +22,9 @@ public class Specialty {
     private String name;
 
     @OneToMany(mappedBy = "specialty",fetch = FetchType.LAZY)
-    @JsonManagedReference
     private List<Doctor> doctorList;
 
     @OneToMany(mappedBy = "specialty",fetch = FetchType.LAZY)
-    @JsonManagedReference
     private List<Pathology> pathologyList;
 
 

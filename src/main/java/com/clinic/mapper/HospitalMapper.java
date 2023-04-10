@@ -10,7 +10,7 @@ public class HospitalMapper {
 
     public PatientDto fromPatient (Patient patient){
 
-        PatientDto patientDto = new PatientDto();
+        PatientDto patientDto =  PatientDto.builder().build();
         BeanUtils.copyProperties(patient,patientDto);
 
         patientDto.setDoctorDto(fromDoctor(patient.getDoctor()));
@@ -21,7 +21,7 @@ public class HospitalMapper {
 
     public Patient formPatientDto (PatientDto patientDto){
 
-        Patient patient = new Patient();
+        Patient patient =  Patient.builder().build();
         BeanUtils.copyProperties(patientDto,patient);
 
         patient.setDoctor(fromDoctorDto(patientDto.getDoctorDto()));
@@ -32,7 +32,7 @@ public class HospitalMapper {
 
     public DoctorDto fromDoctor(Doctor doctor){
 
-        DoctorDto doctorDto = new DoctorDto();
+        DoctorDto doctorDto =  DoctorDto.builder().build();
         BeanUtils.copyProperties(doctor,doctorDto);
 
         doctorDto.setSpecialtyDto(fromSpecialty(doctor.getSpecialty()));
@@ -42,7 +42,7 @@ public class HospitalMapper {
 
     public Doctor fromDoctorDto (DoctorDto doctorDto){
 
-        Doctor doctor = new Doctor();
+        Doctor doctor =  Doctor.builder().build();
         BeanUtils.copyProperties(doctorDto,doctor);
 
         doctor.setSpecialty(fromSpecialtyDto(doctorDto.getSpecialtyDto()));
@@ -52,7 +52,7 @@ public class HospitalMapper {
 
     public PathologyDto fromPathology (Pathology pathology){
 
-        PathologyDto pathologyDto = new PathologyDto();
+        PathologyDto pathologyDto = PathologyDto.builder().build();
         BeanUtils.copyProperties(pathology,pathologyDto);
 
         pathologyDto.setSpecialtyDto(fromSpecialty(pathology.getSpecialty()));
@@ -61,7 +61,7 @@ public class HospitalMapper {
 
     public Pathology fromPathologyDto (PathologyDto pathologyDto){
 
-        Pathology pathology = new Pathology();
+        Pathology pathology = Pathology.builder().build();
         BeanUtils.copyProperties(pathologyDto,pathology);
 
         pathology.setSpecialty(fromSpecialtyDto(pathologyDto.getSpecialtyDto()));
@@ -70,21 +70,21 @@ public class HospitalMapper {
 
     public SpecialtyDto fromSpecialty (Specialty specialty){
 
-        SpecialtyDto specialtyDto = new SpecialtyDto();
+        SpecialtyDto specialtyDto = SpecialtyDto.builder().build();
         BeanUtils.copyProperties(specialty,specialtyDto);
         return specialtyDto;
     }
 
     public Specialty fromSpecialtyDto (SpecialtyDto specialtyDto){
 
-        Specialty specialty = new Specialty();
+        Specialty specialty = Specialty.builder().build();
         BeanUtils.copyProperties(specialtyDto,specialty);
         return specialty;
     }
 
     public EmergencyDto fromEmergency (Emergency emergency){
 
-        EmergencyDto emergencyDto = new EmergencyDto();
+        EmergencyDto emergencyDto = EmergencyDto.builder().build();
         BeanUtils.copyProperties(emergency,emergencyDto);
 
         emergencyDto.setEmergencyManagerDto(fromEmergencyManager(emergency.getManager()));
@@ -94,7 +94,7 @@ public class HospitalMapper {
 
     public Emergency fromEmergencyDto (EmergencyDto emergencyDto){
 
-        Emergency emergency = new Emergency();
+        Emergency emergency =  Emergency.builder().build();
         BeanUtils.copyProperties(emergencyDto,emergency);
 
         emergency.setManager(fromEmergencyManagerDto(emergencyDto.getEmergencyManagerDto()));
@@ -103,7 +103,7 @@ public class HospitalMapper {
 
     public EmergencyManagerDto fromEmergencyManager (EmergencyManager emergencyManager){
 
-        EmergencyManagerDto emergencyManagerDto = new EmergencyManagerDto();
+        EmergencyManagerDto emergencyManagerDto =  EmergencyManagerDto.builder().build();
         BeanUtils.copyProperties(emergencyManager,emergencyManagerDto);
 
         return emergencyManagerDto;
@@ -111,7 +111,7 @@ public class HospitalMapper {
 
     public EmergencyManager fromEmergencyManagerDto (EmergencyManagerDto emergencyManagerDto){
 
-        EmergencyManager emergencyManager = new EmergencyManager();
+        EmergencyManager emergencyManager = EmergencyManager.builder().build();
         BeanUtils.copyProperties(emergencyManagerDto,emergencyManager);
 
         return emergencyManager;

@@ -1,7 +1,6 @@
 package com.clinic.service;
 
 import com.clinic.dtos.*;
-import com.clinic.entity.EmergencyManager;
 import com.clinic.exceptions.*;
 
 import java.util.List;

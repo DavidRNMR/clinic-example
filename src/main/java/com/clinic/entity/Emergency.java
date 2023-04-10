@@ -1,8 +1,7 @@
 package com.clinic.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,6 +13,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Table(name="emergencies")
 public class Emergency {
 
@@ -24,15 +24,12 @@ public class Emergency {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="manager_id",referencedColumnName = "id")
-    @JsonBackReference
     private EmergencyManager manager;
 
     @OneToMany(mappedBy = "emergency",fetch = FetchType.LAZY)
-    @JsonManagedReference
     private List<Patient> patientList;
 
     @OneToMany(mappedBy = "emergency",fetch = FetchType.LAZY)
-    @JsonManagedReference
     private List<Doctor> doctorList;
 
 }
